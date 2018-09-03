@@ -1,0 +1,28 @@
+{
+  "name": "colorgrid",
+  "version": "1.0.0",
+  "description": "Simple Color App",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "electron ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Mahesh-Ranaweera/ColorGRID.git"
+  },
+  "keywords": [
+    "color",
+    "node",
+    "electron"
+  ],
+  "author": "Mahesh Ranaweera",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Mahesh-Ranaweera/ColorGRID/issues"
+  },
+  "homepage": "https://github.com/Mahesh-Ranaweera/ColorGRID#readme",
+  "dependencies": {
+    "electron": "^2.0.8"
+  }
+}
