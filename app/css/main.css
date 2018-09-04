@@ -11,5 +11,12 @@ ui {
     position: relative;
     margin-left: auto;
     margin-right: auto;
-    background-color: #eee;
+}
+
+.box {
+    fill: none;
+}
+
+.box:hover {
+    fill: red;
 }

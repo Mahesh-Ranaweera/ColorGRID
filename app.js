@@ -5,7 +5,7 @@ let mainWindow;
 function createWindow() {
     //define the app window settings
     mainWindow = new BrowserWindow({
-        width: 800,
+        width: 600,
         height: 600,
         title: 'ColorGRID',
         resizable: false,
