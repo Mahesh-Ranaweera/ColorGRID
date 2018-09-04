@@ -30,10 +30,11 @@ function UI() {
                 box.setAttributeNS(null, 'height', size + 'px');
                 box.setAttributeNS(null, 'x', col_count + 'px');
                 box.setAttributeNS(null, 'y', row_count + 'px');
-                box.setAttributeNS(null, 'style', 'fill:rgb(0, 0, 255);stroke-width:0.2;stroke:rgb(255,255,255)');
+                box.setAttributeNS(null, 'style', 'fill:rgb(0, 0, 0);stroke-width:0;stroke:rgb(255,255,255)');
                 box.setAttribute('value', [row_count, col_count]);
                 box.setAttribute('class', 'box');
                 box.setAttribute('onmouseover', 'colorgrid.ui.over(this)');
+                box.setAttribute('onclick', 'colorgrid.ui.click(this)');
                 this.svgEl.appendChild(box);
 
                 col_count += size;
@@ -61,8 +62,12 @@ function UI() {
 
     //hover 
     this.over = function(e) {
-        e.setAttributeNS(null, 'style', 'fill:rgb(255,0,0)');
         console.log('mouse hovered', e.getAttribute('value'));
+    }
+
+    //click
+    this.click = function(e) {
+        e.setAttributeNS(null, 'style', 'fill:rgb(255,0,0)');
     }
 
     //render
