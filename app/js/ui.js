@@ -1,13 +1,27 @@
 'use strict'
 
 function UI() {
+    //ui
     this.el = document.createElement('ui');
     this.el.id = 'interface';
+
+    //create header buttons
+    this.el_head = document.createElement('div');
+    this.el_head.className = 'header';
+    this.el_head.id = 'header';
+    //generate buttons
+    settings.btns.forEach(b => {
+        let btn = document.createElement('div');
+        btn.setAttribute('onclick', 'colorgrid.ui.btnclick(this);');
+        btn.className = 'btn';
+        btn.innerText = b.name;
+        this.el_head.appendChild(btn);
+    });
 
     //create svg bg
     var xmlns = 'http://www.w3.org/2000/svg';
     var boxW = 500;
-    var boxH = 500;
+    var boxH = boxW;
     this.svgEl = document.createElementNS(xmlns, "svg");
     this.svgEl.setAttributeNS(null, 'viewBox', '0 0 ' + boxW + ' '  + boxH);
     this.svgEl.setAttributeNS(null, 'width', boxW);
@@ -70,8 +84,15 @@ function UI() {
         e.setAttributeNS(null, 'style', 'fill:rgb(255,0,0)');
     }
 
+    //btn click
+    this.btnclick = function(e) {
+        console.log("btn click", e);
+        this.render();
+    }
+
     //render
     this.render = function() {
+        this.el.appendChild(this.el_head);
         this.el.appendChild(this.gen_pixels());
         document.getElementById("app").appendChild(this.el);
         console.log('colorGRID initialized');
