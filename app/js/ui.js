@@ -36,26 +36,36 @@ function UI() {
 
         let count = 16;
         let size =  parseInt(boxW / count);
+        console.log(size);
 
-        let row_count = 0;
-        let col_count = 0;
+        let row_count = 0 + 10; //add a small padding
+        let col_count = 0; //add a small padding
 
         var index = 0;
         for(let row = 0; row < count; row++) {
+            //row_count += 10.5;
+            col_count += 10.5;
             for(let col = 0; col < count; col++) {
-                let color = 'fill:#'+colors[index];
+                let color = null;
+                if(colors[index] === undefined){
+                    color = '#'+'000';
+                }else{
+                    color = '#'+colors[index];
+                }
 
                 let box = document.createElementNS(xmlns, "rect");
-                box.setAttributeNS(null, 'width', size + 'px');
-                box.setAttributeNS(null, 'height', size + 'px');
+                box.setAttributeNS(null, 'width', 10 + 'px');
+                box.setAttributeNS(null, 'height', 10 + 'px');
                 box.setAttributeNS(null, 'x', col_count + 'px');
                 box.setAttributeNS(null, 'y', row_count + 'px');
                 box.setAttributeNS(null, 'rx', count);
                 box.setAttributeNS(null, 'ry', count);
-                box.setAttributeNS(null, 'style', color);
+                box.setAttributeNS(null, 'style', 'fill:'+color);
+                box.setAttributeNS(null, 'stroke', 'transparent');
+                box.setAttributeNS(null, 'stroke-width', '2');
                 box.setAttribute('value', [row_count, col_count]);
                 box.setAttribute('class', 'box');
-                box.setAttribute('onmouseenter', 'colorgrid.ui.over(this)');
+                box.setAttribute('onmouseenter', 'colorgrid.ui.over(this, "'+color+'")');
                 box.setAttribute('onmouseleave', 'colorgrid.ui.away(this)');
                 box.setAttribute('onclick', 'colorgrid.ui.click(this)');
                 this.svgEl.appendChild(box);
@@ -80,21 +90,39 @@ function UI() {
     }
 
     //set the bg color
-    this.set_bg_color = function(color = '#000') {
+    this.set_bg_color = function(color = 'none') {
         this.el.style.backgroundColor = color;
     }
 
     //hover 
-    this.over = function(e) {
-        //console.log('mouse hovered', e.getAttribute('value'), e);
+    this.over = function(e, color) {
+        console.log('mouse hovered', e.getAttribute('value'), color);
         e.setAttributeNS(null, 'stroke', '#fff');
         e.setAttributeNS(null, 'stroke-width', '2');
+        e.setAttributeNS(null, 'width', 20 + 'px');
+        e.setAttributeNS(null, 'height', 20 + 'px');
+
+        //get current location coordinates
+        let x = parseInt(e.getAttribute('x')) - 5;
+        let y = parseInt(e.getAttribute('y')) - 5;
+
+        e.setAttributeNS(null, 'x', x + 'px');
+        e.setAttributeNS(null, 'y', y + 'px');
     }
 
     //away
     this.away = function(e) {
         e.setAttributeNS(null, 'stroke', 'none');
         e.setAttributeNS(null, 'stroke-width', 'none');
+        e.setAttributeNS(null, 'width', 10 + 'px');
+        e.setAttributeNS(null, 'height', 10 + 'px');
+
+        //get current location coordinates
+        let x = parseInt(e.getAttribute('x')) + 5;
+        let y = parseInt(e.getAttribute('y')) + 5;
+
+        e.setAttributeNS(null, 'x', x + 'px');
+        e.setAttributeNS(null, 'y', y + 'px');
     }
 
     //click
