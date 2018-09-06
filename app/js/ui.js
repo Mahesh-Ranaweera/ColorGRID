@@ -30,28 +30,38 @@ function UI() {
 
     //generate the pixel boxes
     this.gen_pixels = function() {
-        let count = 20;
-        let size =  boxW / count;
+
+        //colors
+        var colors = materialcolors.colors;
+
+        let count = 16;
+        let size =  parseInt(boxW / count);
 
         let row_count = 0;
         let col_count = 0;
 
+        var index = 0;
         for(let row = 0; row < count; row++) {
             for(let col = 0; col < count; col++) {
-                //console.log(row, col);
+                let color = 'fill:#'+colors[index];
+
                 let box = document.createElementNS(xmlns, "rect");
                 box.setAttributeNS(null, 'width', size + 'px');
                 box.setAttributeNS(null, 'height', size + 'px');
                 box.setAttributeNS(null, 'x', col_count + 'px');
                 box.setAttributeNS(null, 'y', row_count + 'px');
-                box.setAttributeNS(null, 'style', 'fill:rgb(0, 0, 0);stroke-width:0;stroke:rgb(255,255,255)');
+                box.setAttributeNS(null, 'rx', count);
+                box.setAttributeNS(null, 'ry', count);
+                box.setAttributeNS(null, 'style', color);
                 box.setAttribute('value', [row_count, col_count]);
                 box.setAttribute('class', 'box');
-                box.setAttribute('onmouseover', 'colorgrid.ui.over(this)');
+                box.setAttribute('onmouseenter', 'colorgrid.ui.over(this)');
+                box.setAttribute('onmouseleave', 'colorgrid.ui.away(this)');
                 box.setAttribute('onclick', 'colorgrid.ui.click(this)');
                 this.svgEl.appendChild(box);
 
                 col_count += size;
+                index++;
             }
 
             row_count += size;
@@ -76,12 +86,20 @@ function UI() {
 
     //hover 
     this.over = function(e) {
-        console.log('mouse hovered', e.getAttribute('value'));
+        //console.log('mouse hovered', e.getAttribute('value'), e);
+        e.setAttributeNS(null, 'stroke', '#fff');
+        e.setAttributeNS(null, 'stroke-width', '2');
+    }
+
+    //away
+    this.away = function(e) {
+        e.setAttributeNS(null, 'stroke', 'none');
+        e.setAttributeNS(null, 'stroke-width', 'none');
     }
 
     //click
     this.click = function(e) {
-        e.setAttributeNS(null, 'style', 'fill:rgb(255,0,0)');
+        
     }
 
     //btn click
