@@ -97,7 +97,7 @@ function UI() {
     //hover 
     this.over = function(e, color) {
         console.log('mouse hovered', e.getAttribute('value'), color);
-        e.setAttributeNS(null, 'stroke', '#fff');
+        e.setAttributeNS(null, 'stroke', '#78909c');
         e.setAttributeNS(null, 'stroke-width', '2');
         e.setAttributeNS(null, 'width', 20 + 'px');
         e.setAttributeNS(null, 'height', 20 + 'px');
@@ -142,5 +142,28 @@ function UI() {
         this.el.appendChild(this.gen_pixels());
         document.getElementById("app").appendChild(this.el);
         console.log('colorGRID initialized');
+    }
+
+    //save settings
+    this.savedata = function(appdata) {
+        if(typeof localStorage !== 'undefined'){
+            try {
+                localStorage.setItem('colorgrid', JSON.stringify(appdata));
+                return true;
+            } catch(e) {
+                return false;
+            }
+        }
+    }
+
+    //get save data 
+    this.getdata = function() {
+        if(typeof localStorage !== 'undefined') {
+            try {
+                return localStorage.getItem('colorgrid');
+            } catch (e) {
+                return null;
+            }
+        }
     }
 }
