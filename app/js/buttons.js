@@ -8,12 +8,15 @@ var settings = {
         {
             name: 'Home',
             icon: '',
+            value: 'home',
         },{
             name: 'Shades',
             icon: '',
+            value: 'shades',
         },{
             name: 'Swatches',
             icon: '',
+            value: 'swatch',
         }
     ]
 }

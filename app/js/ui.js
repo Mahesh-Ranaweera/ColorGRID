@@ -9,12 +9,16 @@ function UI() {
     this.el_head = document.createElement('div');
     this.el_head.className = 'header';
     this.el_head.id = 'header';
+
+    var self = this;
+
     //generate buttons
     settings.btns.forEach(b => {
         let btn = document.createElement('div');
         btn.setAttribute('onclick', 'colorgrid.ui.btnclick(this);');
         btn.className = 'btn';
         btn.innerText = b.name;
+        btn.setAttribute('data-btn', b.value);
         this.el_head.appendChild(btn);
     });
 
@@ -27,6 +31,14 @@ function UI() {
     this.svgEl.setAttributeNS(null, 'width', boxW);
     this.svgEl.setAttributeNS(null, 'height', boxH);
     this.svgEl.style.display = 'block';
+    this.svgEl.id = 'colorwrap';
+
+    //app settings
+    this.settings = {
+        c_max_size: 20, //circle max size
+        c_min_size: 10, //circle min size
+        loc_diff : 5, //location gap
+    }
 
     //generate the pixel boxes
     this.gen_pixels = function() {
@@ -67,7 +79,7 @@ function UI() {
                 box.setAttribute('class', 'box');
                 box.setAttribute('onmouseenter', 'colorgrid.ui.over(this, "'+color+'")');
                 box.setAttribute('onmouseleave', 'colorgrid.ui.away(this)');
-                box.setAttribute('onclick', 'colorgrid.ui.click(this)');
+                box.setAttribute('onclick', 'colorgrid.ui.click(this, "'+color+'")');
                 this.svgEl.appendChild(box);
 
                 col_count += size;
@@ -99,12 +111,12 @@ function UI() {
         console.log('mouse hovered', e.getAttribute('value'), color);
         e.setAttributeNS(null, 'stroke', '#78909c');
         e.setAttributeNS(null, 'stroke-width', '2');
-        e.setAttributeNS(null, 'width', 20 + 'px');
-        e.setAttributeNS(null, 'height', 20 + 'px');
+        e.setAttributeNS(null, 'width', this.settings.c_max_size + 'px');
+        e.setAttributeNS(null, 'height', this.settings.c_max_size + 'px');
 
         //get current location coordinates
-        let x = parseInt(e.getAttribute('x')) - 5;
-        let y = parseInt(e.getAttribute('y')) - 5;
+        let x = parseInt(e.getAttribute('x')) - this.settings.loc_diff;
+        let y = parseInt(e.getAttribute('y')) - this.settings.loc_diff;
 
         e.setAttributeNS(null, 'x', x + 'px');
         e.setAttributeNS(null, 'y', y + 'px');
@@ -112,28 +124,65 @@ function UI() {
 
     //away
     this.away = function(e) {
+        console.log('mouse away', e.getAttribute('value'));
         e.setAttributeNS(null, 'stroke', 'none');
         e.setAttributeNS(null, 'stroke-width', 'none');
-        e.setAttributeNS(null, 'width', 10 + 'px');
-        e.setAttributeNS(null, 'height', 10 + 'px');
+        e.setAttributeNS(null, 'width', this.settings.c_min_size + 'px');
+        e.setAttributeNS(null, 'height', this.settings.c_min_size + 'px');
 
         //get current location coordinates
-        let x = parseInt(e.getAttribute('x')) + 5;
-        let y = parseInt(e.getAttribute('y')) + 5;
+        let x = parseInt(e.getAttribute('x')) + this.settings.loc_diff;
+        let y = parseInt(e.getAttribute('y')) + this.settings.loc_diff;
 
         e.setAttributeNS(null, 'x', x + 'px');
         e.setAttributeNS(null, 'y', y + 'px');
     }
 
     //click
-    this.click = function(e) {
-        
+    this.click = function(e, color) {
+        this.resetE(e);
+        console.log('clicked', e.getAttribute('value'));
+        e.setAttributeNS(null, 'stroke', '#2196F3');
+        e.setAttributeNS(null, 'stroke-width', '2');
+        e.setAttributeNS(null, 'width', this.settings.c_max_size + 'px');
+        e.setAttributeNS(null, 'height', this.settings.c_max_size + 'px');
+
+        //get current location coordinates
+        let x = parseInt(e.getAttribute('x')) - this.settings.loc_diff;
+        let y = parseInt(e.getAttribute('y')) - this.settings.loc_diff;
+
+        e.setAttributeNS(null, 'x', x + 'px');
+        e.setAttributeNS(null, 'y', y + 'px');
+
+        //copy to clipboard
+        this.copytoclip(color);
+    }
+
+    //reset the element
+    this.resetE = function(e) {
+        let x = parseInt(e.getAttribute('x')) + this.settings.loc_diff;
+        let y = parseInt(e.getAttribute('y')) + this.settings.loc_diff;
+
+        e.setAttributeNS(null, 'x', x + 'px');
+        e.setAttributeNS(null, 'y', y + 'px');
     }
 
     //btn click
     this.btnclick = function(e) {
         console.log("btn click", e);
+        this.clear();
         this.render();
+    }
+
+    //copy color code to clipboard
+    this.copytoclip = function(color){
+        let el = document.createElement('textarea');
+        el.value = color;
+        document.body.appendChild(el);
+        el.select();
+        document.execCommand('copy');
+        document.body.removeChild(el);
+        console.log("copied to clipboard");
     }
 
     //render
@@ -142,6 +191,29 @@ function UI() {
         this.el.appendChild(this.gen_pixels());
         document.getElementById("app").appendChild(this.el);
         console.log('colorGRID initialized');
+    }
+
+    //clear frame
+    this.clear = function() {
+        var app = document.getElementById("app");
+        //console.log('before', app);
+        app.innerHTML = "";
+        console.log('after', app);
+    }
+
+    //shades page
+    this.shadespg = function() {
+
+    }
+
+    //swatches page
+    this.swatcgpg = function() {
+
+    }
+
+    //settings page
+    this.settingspg = function() {
+        
     }
 
     //save settings
