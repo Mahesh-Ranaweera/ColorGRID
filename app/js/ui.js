@@ -116,6 +116,9 @@ function UI() {
 
     //shades page
     var shade_pg = function() {
+
+    	let count = 10;
+
     	let page = document.createElement('DIV');
     	page.setAttribute('style', 'width:'+self.boxW+'px; height:'+self.boxH+'px;');
     	page.id = 'shade_pg';
@@ -152,14 +155,86 @@ function UI() {
     	section.appendChild(input);
     	section.appendChild(btn);
 
-    	let scroll = document.createElement('DIV');
-    	scroll.setAttribute('style', 'width:100%; height:460px; float:left; overflow:hidden;');
+    	//header section
+    	let H = document.createElement('DIV');
+    	H.setAttribute('style', 'width:100%; height:30px; float:left; padding-left:50px; padding-right:50px; box-sizing:border-box;');
+    	H_num(count, H);
 
-		search.appendChild(section);
+    	let M = document.createElement('DIV');
+    	M.setAttribute('style', 'width:100%; height:400px; float:left;');
+
+    	let X1 = document.createElement('DIV');
+    	X1.setAttribute('style', 'width:50px; height:400px; float:left;');
+    	V_num(count, X1);
+
+    	let X2 = document.createElement('DIV');
+    	X2.setAttribute('style', 'width:50px; height:400px; float:left;');
+    	V_num(count, X2);
+
+    	let C = document.createElement('DIV');
+    	C.setAttribute('style', 'width:400px; height:400px; float:left;');
+
+    	let col_count = 0;
+    	//generate the shades
+    	for(let i = 0; i < count; i++) {
+    		let svgEl = document.createElementNS(self.xmlns , 'svg');
+	    	svgEl.setAttributeNS(null, 'viewBox', '0 0 ' + '400' + ' ' + '40');
+	    	svgEl.setAttributeNS(null, 'width', '400');
+	    	svgEl.setAttributeNS(null, 'height', '40');
+	    	svgEl.style.display = 'block';
+
+	    	col_count += 20;
+    		for(let j = 0; j < count; j++) {
+
+    			let svg = document.createElementNS(self.xmlns, 'circle');
+		    	svg.setAttributeNS(null, 'width', 20 + 'px');
+		    	svg.setAttributeNS(null, 'height', 20 + 'px');
+		    	svg.setAttributeNS(null, 'cx', col_count);
+		    	svg.setAttributeNS(null, 'cy', 20);
+		    	svg.setAttributeNS(null, 'r', 10);
+		    	svg.setAttributeNS(null, 'stroke', 'transparent');
+		    	svg.setAttributeNS(null, 'stroke-width', '2');
+		    	svg.setAttributeNS(null, 'style', 'fill:red');
+		    	svgEl.appendChild(svg);
+
+		    	col_count += 40;
+    		}
+    		col_count = 0;
+    		C.appendChild(svgEl);
+    	}
+
+  		M.appendChild(H);
+    	M.appendChild(X1);
+    	M.appendChild(C);
+    	M.appendChild(X2);
+
+    	search.appendChild(section);
     	page.appendChild(search);
-    	page.appendChild(scroll);
+    	page.appendChild(M);
 
     	return page;
+    }
+
+    //creat Vertical Numbers
+    var V_num = function(n, node) {
+    	for(let i = 0; i < n; i++){
+    		let ne = document.createElement('DIV');
+    		ne.setAttribute('style', 'width: 50px; height: 40px; float:left; text-align:center; line-height: 40px; font-size: 10px;');
+    		ne.innerText = i;
+    		node.appendChild(ne);
+    	}
+    	return node;
+    }
+
+    //create Horizontal Numbers
+    var H_num = function(n, node) {
+    	for(let i = 0; i < n; i++){
+    		let ne = document.createElement('DIV');
+    		ne.setAttribute('style', 'width: 40px; height: 30px; float:left; text-align:center; line-height: 30px; font-size: 10px;');
+    		ne.innerText = i;
+    		node.appendChild(ne);
+    	}
+    	return node;
     }
 
     //swatches page
