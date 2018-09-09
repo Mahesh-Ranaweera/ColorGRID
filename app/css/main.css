@@ -6,6 +6,17 @@ body {
     margin: 0;
 }
 
+*, *::after, *::before {
+    -webkit-user-select: none;
+    -webkit-user-drag: none;
+    -webkit-app-region: no-drag;
+    cursor: default;
+}
+
+input:focus, button:focus, select:focus, textarea:focus {
+    outline: none;
+} 
+
 ui {
     display: block;
     position: relative;
