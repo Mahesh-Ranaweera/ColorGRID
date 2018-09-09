@@ -2,7 +2,7 @@
  * Define the necessary buttons
  */
 
-var settings = {
+var pg_btns = {
     //ui btns
     btns : [
         {
