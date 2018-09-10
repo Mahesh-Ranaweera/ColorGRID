@@ -19,6 +19,7 @@ function UI() {
 
     //initialize store data
     this.store = new app_data();
+    this.store.init();
 
     //get buttons
     this.pg_btns = pg_btns;
@@ -173,7 +174,7 @@ function UI() {
     	let search = document.createElement('DIV');
     	search.setAttribute('style', 'width:100%; height: 40px; float: left;');
     	let section = document.createElement('DIV');
-    	section.setAttribute('style', 'width: 400px; height: 40px; display:block; margin: 0 auto 0 auto; display: flex;');
+    	section.setAttribute('style', 'width: 500px; height: 40px; display:block; margin: 0 auto 0 auto; display: flex;');
 
     	let hex_input = document.createElement('INPUT');
     	hex_input.setAttribute('style', 'width: 100%; height: 40px; float: left; border-style:none; background-color: inherit; color: #78909c; font-size: 16px; text-indent: 10px; flex: 1;  letter-spacing:4px; text-transform:uppercase;')
@@ -318,7 +319,7 @@ function UI() {
     	H_num(count, H);
 
     	let M = document.createElement('DIV');
-    	M.setAttribute('style', 'width:100%; height:400px; float:left;');
+    	M.setAttribute('style', 'width:100%; height:460px; float:left;');
 
     	let X1 = document.createElement('DIV');
     	X1.setAttribute('style', 'width:50px; height:400px; float:left;');
@@ -348,7 +349,7 @@ function UI() {
 		    	svg.setAttributeNS(null, 'cx', col_count);
 		    	svg.setAttributeNS(null, 'cy', 20);
 		    	svg.setAttributeNS(null, 'r', 10);
-		    	svg.setAttributeNS(null, 'stroke', 'transparent');
+		    	svg.setAttributeNS(null, 'stroke', '#EEE');
 		    	svg.setAttributeNS(null, 'stroke-width', '2');
 		    	svg.setAttributeNS(null, 'style', 'fill:'+color_arr.hex[counter]);
 		    	svg.setAttribute('hex', color_arr.hex[counter]);
@@ -439,15 +440,18 @@ function UI() {
 
         if(selectbtn === 'home'){
         	console.log('selected home')
+        	self.store.update('opentab', 'home');
         	this.render(colorgrid_pg(), header);
         }
 
         if(selectbtn === 'shades') {
         	console.log('selected shades');
+        	self.store.update('opentab', 'shades');
         	this.render(shade_pg(), header);
         }
 
-        if(selectbtn === 'swatch') {
+        if(selectbtn === 'swatches') {
+        	self.store.update('opentab', 'swatches');
         	console.log('selected swatch');
         }
     }

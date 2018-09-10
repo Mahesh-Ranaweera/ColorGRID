@@ -4,21 +4,42 @@
 function app_data() {
 	this.app_name = 'colorgrid';
 	
-	//store data
+	//store data || default
 	this.default = {
-		bgcolor: '',
+		bgcolor: {
+			name: 'dark',
+			color: '#111',
+		},
+		opentab: {
+			name: 'home',
+		}
 	}
 
 	//store preset data
 	this.preset  = {
-		bglight: {
-			name: 'light',
-			color: '#fff',
+		//bg colors
+		bg: {
+			light: {
+				name: 'light',
+				color: '#fff',
+			},
+			dark : {
+				name: 'dark',
+				color: '#111',
+			}	
 		},
-		bgdark : {
-			name: 'dark',
-			color: '#111',
-		}
+		//tabs
+		tabs: {
+			home: {
+				name: 'home',
+			},
+			shades: {
+				name: 'shades',
+			},
+			swatches: {
+				name: 'swatches',
+			}
+		},
 	}
 
 	//set the data
@@ -69,8 +90,12 @@ function app_data() {
 		let save = '';
 		switch(key) {
 			case 'bgcolor':
-				if(value === 'dark'){ save = this.preset.bgdark; } else { save = this.preset.bglight; }
+				save = this.preset.bg[value];
 				get_data.bgcolor = save; 
+				break;
+			case 'opentab':
+				save = this.preset.tabs[value];
+				get_data.opentab = save; 
 				break;
 			default:
 				break;

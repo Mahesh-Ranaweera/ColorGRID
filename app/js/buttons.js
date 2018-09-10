@@ -6,17 +6,17 @@ var pg_btns = {
     //ui btns
     btns : [
         {
-            name: 'Home',
+            name: 'home',
             icon: '',
             value: 'home',
         },{
-            name: 'Shades',
+            name: 'shades',
             icon: '',
             value: 'shades',
         },{
-            name: 'Swatches',
+            name: 'swatches',
             icon: '',
-            value: 'swatch',
+            value: 'swatches',
         }
     ]
 }
