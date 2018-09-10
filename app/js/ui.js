@@ -117,8 +117,6 @@ function UI() {
     //shades page
     var shade_pg = function() {
 
-    	let count = 10;
-
     	let page = document.createElement('DIV');
     	page.setAttribute('style', 'width:'+self.boxW+'px; height:'+self.boxH+'px;');
     	page.id = 'shade_pg';
@@ -126,18 +124,36 @@ function UI() {
     	let search = document.createElement('DIV');
     	search.setAttribute('style', 'width:100%; height: 40px; float: left;');
     	let section = document.createElement('DIV');
-    	section.setAttribute('style', 'width: 300px; height: 40px; display:block; margin: 0 auto 0 auto; display: flex;');
+    	section.setAttribute('style', 'width: 400px; height: 40px; display:block; margin: 0 auto 0 auto; display: flex;');
 
-    	let input = document.createElement('INPUT');
-    	input.setAttribute('style', 'width: 100%; height: 40px; float: left; border-style:none; background-color: inherit; color: #78909c; font-size: 16px; text-indent: 10px; flex: 1;  letter-spacing:4px; text-transform:uppercase;')
-    	input.setAttribute('type', 'text');
-    	input.value = '#2196F3';
-    	input.onkeyup = function() {
-    		console.log(this.value);
-    		if(this.value.length <= 7){
-    			console.log('valid');
+    	let hex_input = document.createElement('INPUT');
+    	hex_input.setAttribute('style', 'width: 100%; height: 40px; float: left; border-style:none; background-color: inherit; color: #78909c; font-size: 16px; text-indent: 10px; flex: 1;  letter-spacing:4px; text-transform:uppercase;')
+    	hex_input.setAttribute('type', 'text');
+    	hex_input.id = 'getcolor';
+    	hex_input.value = '#2196F3';
+    	hex_input.onkeyup = function() {
+    		let color = this.value;
+    		if(!is_hex(color)){
+    			this.style.color = '#f06292';
     		} else {	
-    			console.log('invalid');
+    			this.style.color = '#78909c';
+    		}
+    	}
+
+    	let perc_input = document.createElement('INPUT');
+    	perc_input.setAttribute('style', 'width: 80px; height: 40px; float: left; border-style:none; background-color: inherit; color: #78909c; font-size: 16px; text-indent: 10px; letter-spacing:4px; text-transform:uppercase;')
+    	perc_input.setAttribute('type', 'number');
+    	perc_input.setAttribute('min', '0');
+    	perc_input.setAttribute('max', '1');
+    	perc_input.setAttribute('step', '0.01');
+    	perc_input.id = 'getpercent';
+    	perc_input.value = '0.5';
+    	perc_input.onkeyup = function() {
+    		let percent = this.value;
+    		if(!is_percent(percent)){
+    			this.style.color = '#f06292';
+    		} else {	
+    			this.style.color = '#78909c';
     		}
     	}
 
@@ -145,69 +161,38 @@ function UI() {
     	btn.setAttribute('style', 'width:40px; height:40px; text-align:center; line-height:40px; float: left; padding: 8px; box-sizing:border-box;')
     	btn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" style="cursor:pointer;" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-play"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>`;
     	btn.onmouseover = function() {
-    		this.style.color = '#2962ff';
+    		this.style.color = '#2962ff'; //hover
     	}
     	btn.onmouseleave = function() {
     		this.style.color = '';
     	}
-    	btn.setAttribute('onclick', '');
+    	btn.onclick = function() {
+    		let sel = document.getElementById('getcolor');
+     		let perc= document.getElementById('getpercent');
+     		if(!is_hex(sel.value) || !is_percent(perc.value)){
+     			return;
+     		}
 
-    	section.appendChild(input);
-    	section.appendChild(btn);
+    		page.innerHTML = "";
+    		section.appendChild(hex_input);
+    		section.appendChild(perc_input);
+	    	section.appendChild(btn);
 
-    	//header section
-    	let H = document.createElement('DIV');
-    	H.setAttribute('style', 'width:100%; height:30px; float:left; padding-left:50px; padding-right:50px; box-sizing:border-box;');
-    	H_num(count, H);
+	    	let shades = get_shades(sel.value, perc.value);
+	    	let M = render_shades(shades);
+	    	search.appendChild(section);
+	    	page.appendChild(search);
+	    	page.appendChild(M);
 
-    	let M = document.createElement('DIV');
-    	M.setAttribute('style', 'width:100%; height:400px; float:left;');
-
-    	let X1 = document.createElement('DIV');
-    	X1.setAttribute('style', 'width:50px; height:400px; float:left;');
-    	V_num(count, X1);
-
-    	let X2 = document.createElement('DIV');
-    	X2.setAttribute('style', 'width:50px; height:400px; float:left;');
-    	V_num(count, X2);
-
-    	let C = document.createElement('DIV');
-    	C.setAttribute('style', 'width:400px; height:400px; float:left;');
-
-    	let col_count = 0;
-    	//generate the shades
-    	for(let i = 0; i < count; i++) {
-    		let svgEl = document.createElementNS(self.xmlns , 'svg');
-	    	svgEl.setAttributeNS(null, 'viewBox', '0 0 ' + '400' + ' ' + '40');
-	    	svgEl.setAttributeNS(null, 'width', '400');
-	    	svgEl.setAttributeNS(null, 'height', '40');
-	    	svgEl.style.display = 'block';
-
-	    	col_count += 20;
-    		for(let j = 0; j < count; j++) {
-
-    			let svg = document.createElementNS(self.xmlns, 'circle');
-		    	svg.setAttributeNS(null, 'width', 20 + 'px');
-		    	svg.setAttributeNS(null, 'height', 20 + 'px');
-		    	svg.setAttributeNS(null, 'cx', col_count);
-		    	svg.setAttributeNS(null, 'cy', 20);
-		    	svg.setAttributeNS(null, 'r', 10);
-		    	svg.setAttributeNS(null, 'stroke', 'transparent');
-		    	svg.setAttributeNS(null, 'stroke-width', '2');
-		    	svg.setAttributeNS(null, 'style', 'fill:red');
-		    	svgEl.appendChild(svg);
-
-		    	col_count += 40;
-    		}
-    		col_count = 0;
-    		C.appendChild(svgEl);
+    		self.render(page, header);
     	}
 
-  		M.appendChild(H);
-    	M.appendChild(X1);
-    	M.appendChild(C);
-    	M.appendChild(X2);
+    	section.appendChild(hex_input);
+    	section.appendChild(perc_input);
+    	section.appendChild(btn);
 
+    	let shades = get_shades('#2196F3', 0.5);
+    	let M = render_shades(shades);
     	search.appendChild(section);
     	page.appendChild(search);
     	page.appendChild(M);
@@ -235,6 +220,105 @@ function UI() {
     		node.appendChild(ne);
     	}
     	return node;
+    }
+
+    var is_hex = function(string) {
+    	let regex =  /(^#[0-9A-F]{6}$)|(^#[0-9A-F]{3}$)/i;
+
+    	if(regex.test(string)){
+    		return true;
+    	}
+    	return false;
+    }
+
+    var is_percent = function(percent) {
+    	if(percent > 1 || percent < 0 || percent === undefined){
+    		return false;
+    	} 
+    	return true;
+    }
+
+    //get the shades
+    var get_shades = function(value, percent) {
+    	//generate colors
+    	let gen = new gen_colors();
+    	let color = {hex:[], rgb:[]};
+
+		let col = null;
+		let hex_c = value;
+
+    	for(let i = 0; i < 100; i++){
+    		col = gen.gen_hex_shades(hex_c, percent);
+    		color.hex.push(col[0]);
+    		color.rgb.push(col[1]);
+
+    		hex_c = col[0];
+    	}
+
+    	return color;
+    }   
+
+    //get render shades page colors
+    var render_shades = function(color_arr) {
+
+    	let count = 10;
+
+    	//header section
+    	let H = document.createElement('DIV');
+    	H.setAttribute('style', 'width:100%; height:30px; float:left; padding-left:50px; padding-right:50px; box-sizing:border-box;');
+    	H_num(count, H);
+
+    	let M = document.createElement('DIV');
+    	M.setAttribute('style', 'width:100%; height:400px; float:left;');
+
+    	let X1 = document.createElement('DIV');
+    	X1.setAttribute('style', 'width:50px; height:400px; float:left;');
+    	V_num(count, X1);
+
+    	let X2 = document.createElement('DIV');
+    	X2.setAttribute('style', 'width:50px; height:400px; float:left;');
+    	V_num(count, X2);
+
+    	let C = document.createElement('DIV');
+    	C.setAttribute('style', 'width:400px; height:400px; float:left;');
+
+    	let col_count = 0, counter = 0;
+    	//generate the shades
+    	for(let i = 0; i < count; i++) {
+    		let svgEl = document.createElementNS(self.xmlns , 'svg');
+	    	svgEl.setAttributeNS(null, 'viewBox', '0 0 ' + '400' + ' ' + '40');
+	    	svgEl.setAttributeNS(null, 'width', '400');
+	    	svgEl.setAttributeNS(null, 'height', '40');
+	    	svgEl.style.display = 'block';
+
+	    	col_count += 20;
+    		for(let j = 0; j < count; j++) {
+    			let svg = document.createElementNS(self.xmlns, 'circle');
+		    	svg.setAttributeNS(null, 'width', 20 + 'px');
+		    	svg.setAttributeNS(null, 'height', 20 + 'px');
+		    	svg.setAttributeNS(null, 'cx', col_count);
+		    	svg.setAttributeNS(null, 'cy', 20);
+		    	svg.setAttributeNS(null, 'r', 10);
+		    	svg.setAttributeNS(null, 'stroke', 'transparent');
+		    	svg.setAttributeNS(null, 'stroke-width', '2');
+		    	svg.setAttributeNS(null, 'style', 'fill:'+color_arr.hex[counter]);
+		    	svg.setAttribute('hex', color_arr.hex[counter]);
+		    	svg.setAttribute('rgb', color_arr.rgb[counter]);
+		    	svgEl.appendChild(svg);
+
+		    	col_count += 40;
+		    	counter += 1;
+    		}
+    		col_count = 0;
+    		C.appendChild(svgEl);
+    	}
+
+  		M.appendChild(H);
+    	M.appendChild(X1);
+    	M.appendChild(C);
+    	M.appendChild(X2);
+
+    	return M;
     }
 
     //swatches page
