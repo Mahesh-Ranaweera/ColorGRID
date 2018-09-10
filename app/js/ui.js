@@ -17,6 +17,9 @@ function UI() {
     //get the colors 
     this.colors = materialcolors.colors;
 
+    //initialize store data
+    this.store = new app_data();
+
     //get buttons
     this.pg_btns = pg_btns;
 
@@ -38,17 +41,17 @@ function UI() {
     }
 
     //set the bg color
-    this.set_bg_color = function(color = 'none') {
-        this.el.style.backgroundColor = color;
+    this.set_bg_color = function(color = this.store.get_key('bgcolor').color) {
+        document.body.style.backgroundColor = color;
     }
 
-    //generate the buttons
+    //generate the header
     var header_btns = function() {
-    	let el_head = document.createElement('div');
+    	let el_head = document.createElement('DIV');
 	    el_head.className = 'header';
 	    el_head.id = 'header';
     	self.pg_btns.btns.forEach(b => {
-	        let btn = document.createElement('div');
+	        let btn = document.createElement('DIV');
 	        btn.setAttribute('onclick', 'colorgrid.ui.btnclick(this);');
 	        btn.className = 'btn';
 	        btn.innerText = b.name;
@@ -57,6 +60,52 @@ function UI() {
 	    });
 
 	    return el_head;
+    }
+
+    //generate the footer
+    var footer_pg = function() {
+    	let el_foot = document.createElement('DIV');
+    	el_foot.className = 'footer';
+    	el_foot.id = 'footer';
+
+    	//BG toggle
+    	let bg_toggle = document.createElement('DIV');
+    	bg_toggle.setAttribute('style', 'width:100px; height:40px; float:right; display:flex;');
+
+    	let text = document.createElement('DIV');
+    	text.setAttribute('style', 'width:100%; line-height: 40px; text-transform: uppercase; color: #78909c; 40px; flex: 1;');
+    	text.innerText = 'BG COLOR';
+
+    	let icon = document.createElement('DIV');
+    	icon.setAttribute('style', 'width: 40px; height: 40px; float:right; padding: 8px; box-sizing:border-box;');
+    	icon.innerHTML = `<svg id='bgicon' xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="transparent" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-droplet"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"></path></svg>`;
+    	icon.id = 'bg_color';
+    	icon.onmouseover = function() {
+    		let icon = document.getElementById('bgicon');
+    		icon.setAttributeNS(null, 'stroke', '#2962ff');
+    	}
+    	icon.onmouseleave = function() {
+    		let icon = document.getElementById('bgicon');
+    		icon.setAttributeNS(null, 'stroke', '#78909c');
+    	}
+    	icon.onclick = function() {
+    		let icon = document.getElementById('bgicon');
+    		let BG = document.body;
+
+    		if(self.store.get_key('bgcolor').name === 'light'){
+    			BG.style.backgroundColor = '#111';
+    			self.store.update('bgcolor', 'dark');
+    		} else {
+    			BG.style.backgroundColor = '#fff';
+    			self.store.update('bgcolor', 'light');
+    		}
+    	}
+
+    	bg_toggle.appendChild(text);
+    	bg_toggle.appendChild(icon);
+
+    	el_foot.appendChild(bg_toggle);
+    	return el_foot;
     }
 
     //home page 
@@ -428,6 +477,7 @@ function UI() {
     	this.el.innerHTML = "";
     	this.el.appendChild(header);
     	this.el.appendChild(page);
+    	this.el.appendChild(footer_pg());
         this.app.appendChild(this.el);
         console.log('colorGRID initialized');
     }

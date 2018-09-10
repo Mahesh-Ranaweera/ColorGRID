@@ -18,7 +18,7 @@ function createWindow() {
     mainWindow.setMenuBarVisibility(false);
 
     //open the dev tools for debug
-    mainWindow.webContents.openDevTools();
+    //mainWindow.webContents.openDevTools();
 
     //load the app page
     mainWindow.loadFile('app.html');
