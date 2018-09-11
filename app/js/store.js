@@ -12,7 +12,28 @@ function app_data() {
 		},
 		opentab: {
 			name: 'home',
-		}
+		},
+		//swatches
+		swatches: [
+			{
+				id: 122113,
+				color: [
+					'#2196F3',
+					'#EEEEEE',
+					'#2196F3',
+					'#EEEEEE',
+				]
+			},
+			{
+				id: 223133,
+				color: [
+					'#2196F3',
+					'#EEEEEE',
+					'#2196F3',
+					'#EEEEEE',
+				]
+			},
+		]
 	}
 
 	//store preset data
@@ -39,7 +60,7 @@ function app_data() {
 			swatches: {
 				name: 'swatches',
 			}
-		},
+		}
 	}
 
 	//set the data

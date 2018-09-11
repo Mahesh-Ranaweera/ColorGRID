@@ -373,7 +373,31 @@ function UI() {
 
     //swatches page
     var swatch_pg = function() {
+    	let page = document.createElement('DIV');
+    	page.setAttribute('style', 'width:'+self.boxW +'px; height:' + self.boxH+'px; overflow: auto;');
+    	page.id = 'swatche_pg';
 
+    	let swatch_data = self.store.get_key('swatches');
+    	swatch_data.forEach((e) => {
+    		let wrapper = document.createElement('DIV');
+    		wrapper.setAttribute('style', 'width:50%;height:32px;float:left;padding:4px;box-sizing:border-box;');
+    		let swatch = document.createElement('DIV');
+    		swatch.setAttribute('style', 'width:100%;height:24px;border:1px solid #EEE;');
+    		swatch.style.display = 'block';
+
+    		let c = e;
+
+    		for(let i = 0; i < 4; i++){
+    			let el = document.createElement('DIV');
+    			el.setAttribute('style', 'width:25%;height:100%;float:left;background-color:'+c.color[i]+';');
+    			swatch.appendChild(el);
+    		}
+
+    		wrapper.appendChild(swatch);
+    		page.appendChild(wrapper);
+    	});
+
+    	return page;
     }
 
     //settings page
@@ -452,7 +476,7 @@ function UI() {
 
         if(selectbtn === 'swatches') {
         	self.store.update('opentab', 'swatches');
-        	console.log('selected swatch');
+        	this.render(swatch_pg(), header);
         }
     }
 
