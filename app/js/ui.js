@@ -69,6 +69,24 @@ function UI() {
     	el_foot.className = 'footer';
     	el_foot.id = 'footer';
 
+    	//Swatch
+    	let svgbox = document.createElementNS(self.xmlns, 'svg');
+    	svgbox.setAttributeNS(null, 'viewBox', '0 0 ' + 100 + ' ' + 40);
+    	svgbox.setAttributeNS(null, 'width', 100 + 'px');
+    	svgbox.setAttributeNS(null, 'height', 40 + 'px');
+
+    	// TODO :: add svg colors
+
+    	//Color
+    	let swatch_c = document.createElement('DIV');
+    	swatch_c.setAttribute('style', 'width:100px;height:40px;float:left;');
+    	swatch_c.appendChild(svgbox);
+
+    	//Name TAG
+    	let app_name = document.createElement('DIV');
+    	app_name.setAttribute('style', 'width:100%;height:40px;float:left;flex:1;text-align:center;line-height:40px;text-transform:uppercase;color:#78909c;');
+    	app_name.innerText = 'Color GRID V 1.0';
+
     	//BG toggle
     	let bg_toggle = document.createElement('DIV');
     	bg_toggle.setAttribute('style', 'width:100px; height:40px; float:right; display:flex;');
@@ -105,6 +123,8 @@ function UI() {
     	bg_toggle.appendChild(text);
     	bg_toggle.appendChild(icon);
 
+    	el_foot.appendChild(swatch_c);
+    	el_foot.appendChild(app_name);
     	el_foot.appendChild(bg_toggle);
     	return el_foot;
     }
@@ -352,8 +372,22 @@ function UI() {
 		    	svg.setAttributeNS(null, 'stroke', '#EEE');
 		    	svg.setAttributeNS(null, 'stroke-width', '2');
 		    	svg.setAttributeNS(null, 'style', 'fill:'+color_arr.hex[counter]);
+		    	svg.setAttribute('data-color', color_arr.hex[counter]);
 		    	svg.setAttribute('hex', color_arr.hex[counter]);
 		    	svg.setAttribute('rgb', color_arr.rgb[counter]);
+		    	svg.setAttribute('data-x', j);
+		    	svg.setAttribute('data-y', i);
+		    	svg.onmouseover = function() {
+		    		this.setAttributeNS(null, 'stroke', '#78909c');
+		    		console.log(this.getAttribute('data-color'));
+		    		console.log(this.getAttribute('data-x'), this.getAttribute('data-y'))
+		    	}
+		    	svg.onmouseleave = function() {
+		    		this.setAttributeNS(null, 'stroke', '#EEE');
+		    	}
+		    	svg.onclick = function() {
+		    		this.setAttributeNS(null, 'stroke', '#2196F3');
+		    	}
 		    	svgEl.appendChild(svg);
 
 		    	col_count += 40;
@@ -405,15 +439,18 @@ function UI() {
     			el.setAttributeNS(null, 'stroke-width', '1');
     			el.setAttributeNS(null, 'x', col + 'px');
     			el.setAttributeNS(null, 'style', 'fill:'+c.color[i]);
+    			el.setAttribute('data-color', c.color[i])
     			el.setAttribute('title', c.color[i]);
     			el.onmouseover = function() {
     				this.setAttributeNS(null, 'stroke', '#78909c');
+    				console.log(this.getAttribute('data-color'))
     			}
     			el.onmouseleave = function() {
     				this.setAttributeNS(null, 'stroke', '');
     			}
     			el.onclick = function() {
     				this.setAttributeNS(null, 'stroke', '#2196F3');
+    				console.log(this.getAttribute('data-color'));
     			}
     			wrapper.appendChild(el);
     			col += 60;
