@@ -379,21 +379,46 @@ function UI() {
 
     	let swatch_data = self.store.get_key('swatches');
     	swatch_data.forEach((e) => {
-    		let wrapper = document.createElement('DIV');
-    		wrapper.setAttribute('style', 'width:50%;height:32px;float:left;padding:4px;box-sizing:border-box;');
-    		let swatch = document.createElement('DIV');
-    		swatch.setAttribute('style', 'width:100%;height:24px;border:1px solid #EEE;');
-    		swatch.style.display = 'block';
 
-    		let c = e;
-
-    		for(let i = 0; i < 4; i++){
-    			let el = document.createElement('DIV');
-    			el.setAttribute('style', 'width:25%;height:100%;float:left;background-color:'+c.color[i]+';');
-    			swatch.appendChild(el);
+    		let wrapper = document.createElementNS(self.xmlns, 'svg');
+    		wrapper.setAttributeNS(null, 'viewBox', '0 0 ' + 244 + ' ' + 24);
+    		wrapper.setAttributeNS(null, 'width', 240 + 'px');
+    		wrapper.setAttributeNS(null, 'height', 24 + 'px');
+    		wrapper.setAttributeNS(null, 'stroke-width', '1');
+    		wrapper.setAttribute('style', 'padding:2px;');
+    		wrapper.onmouseover = function() {
+    			this.setAttributeNS(null, 'stroke', '#78909c');
+    		}
+    		wrapper.onmouseleave = function() {
+    			this.setAttributeNS(null, 'stroke', '');
+    		}
+    		wrapper.onclick = function() {
+    			this.setAttributeNS(null, 'stroke', '#2196F3');
     		}
 
-    		wrapper.appendChild(swatch);
+    		let c = e;
+    		let col = 0;
+    		for(let i = 0; i < 4; i++){
+    			let el = document.createElementNS(self.xmlns, 'rect');
+    			el.setAttributeNS(null, 'width', 58 + 'px');
+    			el.setAttributeNS(null, 'height', 22 + 'px');
+    			el.setAttributeNS(null, 'stroke-width', '1');
+    			el.setAttributeNS(null, 'x', col + 'px');
+    			el.setAttributeNS(null, 'style', 'fill:'+c.color[i]);
+    			el.setAttribute('title', c.color[i]);
+    			el.onmouseover = function() {
+    				this.setAttributeNS(null, 'stroke', '#78909c');
+    			}
+    			el.onmouseleave = function() {
+    				this.setAttributeNS(null, 'stroke', '');
+    			}
+    			el.onclick = function() {
+    				this.setAttributeNS(null, 'stroke', '#2196F3');
+    			}
+    			wrapper.appendChild(el);
+    			col += 60;
+    		}
+
     		page.appendChild(wrapper);
     	});
 
