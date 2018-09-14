@@ -69,58 +69,6 @@ function UI() {
     	el_foot.className = 'footer';
     	el_foot.id = 'footer';
 
-    	//Swatch
-    	let svgbox = document.createElementNS(self.xmlns, 'svg');
-    	svgbox.setAttributeNS(null, 'viewBox', '0 0 ' + 100 + ' ' + 40);
-    	svgbox.setAttributeNS(null, 'width', 100 + 'px');
-    	svgbox.setAttributeNS(null, 'height', 40 + 'px');
-
-    	// TODO :: add svg colors
-    	var col = 12;
-    	for(let i = 0; i < 4; i++) {
-    		let circle = document.createElementNS(self.xmlns, 'circle');
-    		circle.setAttributeNS(null, 'width', 25 + 'px');
-    		circle.setAttributeNS(null, 'height', 25 + 'px');
-    		circle.setAttributeNS(null, 'cx', col + 'px');
-    		circle.setAttributeNS(null, 'cy', 20 + 'px');
-    		circle.setAttributeNS(null, 'stroke', '#78909c');
-    		circle.setAttributeNS(null, 'stroke-width', '2');
-    		circle.setAttributeNS(null, 'style', 'fill:rgba(238, 238, 238, 0.01)');
-
-    		circle.setAttributeNS(null, 'r', 10);
-    		circle.onmouseover = function() {
-    			this.setAttributeNS(null, 'stroke', '#78909c');
-    		}
-    		circle.onmouseleave = function() {
-    			this.setAttributeNS(null, 'stroke', '#78909c');
-    		}
-    		circle.onclick = function() {
-    			this.setAttributeNS(null, 'stroke', '#2196F3');
-    		}
-
-    		svgbox.appendChild(circle);
-    		col += 25;
-    	}
-
-    	//save btn
-    	let savebtn = document.createElement('DIV');
-    	savebtn.setAttribute('style', 'width:40px;height:40px;float:left;padding:8px;box-sizing:border-box;color:#78909c');
-    	savebtn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-save"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>`;
-    	savebtn.onmouseover = function() {
-    		this.style.color = '#78909c';
-    	}
-    	savebtn.onmouseleave = function() {
-    		this.style.color = '#78909c';
-    	}
-    	savebtn.onclick = function() {
-    		this.style.color = '#2196F3';
-    	}
-
-    	//Color
-    	let swatch_c = document.createElement('DIV');
-    	swatch_c.setAttribute('style', 'width:100px;height:40px;float:left;');
-    	swatch_c.appendChild(svgbox);
-
     	//Name TAG
     	let app_name = document.createElement('DIV');
     	app_name.setAttribute('style', 'width:100%;height:40px;float:left;flex:1;text-align:center;line-height:40px;text-transform:uppercase;color:#78909c;');
@@ -159,11 +107,14 @@ function UI() {
     		}
     	}
 
+    	// swatch 
+    	let swatch_h = swatch_handler();
+
     	bg_toggle.appendChild(text);
     	bg_toggle.appendChild(icon);
 
-    	el_foot.appendChild(swatch_c);
-    	el_foot.appendChild(savebtn);
+    	el_foot.appendChild(swatch_h[0]);
+    	el_foot.appendChild(swatch_h[1]);
     	el_foot.appendChild(app_name);
     	el_foot.appendChild(bg_toggle);
     	return el_foot;
@@ -557,6 +508,7 @@ function UI() {
 
         //copy to clipboard
         clipboard(color);
+        swap_colors(color);
     }
 
     //=>btn click
@@ -601,6 +553,86 @@ function UI() {
         document.body.removeChild(el);
         console.log("copied to clipboard");
     }
+
+    //swatch handler
+   	var swatch_handler = function() {
+
+   		//temp swatch colors
+   		let temp_colors = self.store.get_key('temp_swatch');
+
+   		//Swatch
+    	let svgbox = document.createElementNS(self.xmlns, 'svg');
+    	svgbox.setAttributeNS(null, 'viewBox', '0 0 ' + 100 + ' ' + 40);
+    	svgbox.setAttributeNS(null, 'width', 100 + 'px');
+    	svgbox.setAttributeNS(null, 'height', 40 + 'px');
+
+    	// TODO :: add svg colors
+    	var col = 12;
+    	for(let i = 0; i < 4; i++) {
+    		let circle = document.createElementNS(self.xmlns, 'circle');
+    		circle.setAttributeNS(null, 'width', 25 + 'px');
+    		circle.setAttributeNS(null, 'height', 25 + 'px');
+    		circle.setAttributeNS(null, 'cx', col + 'px');
+    		circle.setAttributeNS(null, 'cy', 20 + 'px');
+    		circle.setAttributeNS(null, 'stroke', '#78909c');
+    		circle.setAttributeNS(null, 'stroke-width', '2');
+    		circle.setAttributeNS(null, 'style', 'fill:'+temp_colors[i]);
+
+    		circle.setAttributeNS(null, 'r', 10);
+    		circle.onmouseover = function() {
+    			this.setAttributeNS(null, 'stroke', '#78909c');
+    		}
+    		circle.onmouseleave = function() {
+    			this.setAttributeNS(null, 'stroke', '#78909c');
+    		}
+    		circle.onclick = function() {
+    			this.setAttributeNS(null, 'stroke', '#2196F3');
+    		}
+
+    		svgbox.appendChild(circle);
+    		col += 25;
+    	}
+
+    	//save btn
+    	let savebtn = document.createElement('DIV');
+    	savebtn.setAttribute('style', 'width:40px;height:40px;float:left;padding:8px;box-sizing:border-box;color:#78909c');
+    	savebtn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-save"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>`;
+    	savebtn.onmouseover = function() {
+    		this.style.color = '#78909c';
+    	}
+    	savebtn.onmouseleave = function() {
+    		this.style.color = '#78909c';
+    	}
+    	savebtn.onclick = function() {
+    		this.style.color = '#2196F3';
+    	}
+
+    	//Color
+    	let swatch_c = document.createElement('DIV');
+    	swatch_c.setAttribute('style', 'width:100px;height:40px;float:left;');
+    	swatch_c.appendChild(svgbox);
+
+    	return [swatch_c, savebtn];
+   	}
+
+   	//swap swatch colors
+   	var swap_colors = function(color="#EEE") {
+   		//refresh footer
+   		let temp_colors = self.store.get_key('temp_swatch');
+   		console.log('colors', temp_colors);
+
+   		//swap colors
+   	 	// let c = temp_colors[0];
+   	 	// temp_colors[1] = c;
+   	 	// temp_colors[2] = temp_colors[];
+   	 	// temp_colors[0] = color;
+   	 	for(let i = 0; i < temp_colors.length; i++) {
+   	 		
+   	 	}
+
+   		//refresh footer
+   		self.render();
+   	}
 
     //render the page
     this.render = function(page=colorgrid_pg(), header=header_btns()) {

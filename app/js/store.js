@@ -33,7 +33,9 @@ function app_data() {
 					'#EEEEEE',
 				]
 			},
-		]
+		],
+		//temp swatch
+		temp_swatch: ['#EEE', '#EEE', '#EEE', '#EEE']
 	}
 
 	//store preset data
