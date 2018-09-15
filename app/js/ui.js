@@ -371,13 +371,14 @@ function UI() {
 		    	svg.onmouseover = function() {
 		    		this.setAttributeNS(null, 'stroke', '#78909c');
 		    		console.log(this.getAttribute('data-color'));
-		    		console.log(this.getAttribute('data-x'), this.getAttribute('data-y'))
+		    		//console.log(this.getAttribute('data-x'), this.getAttribute('data-y'))
 		    	}
 		    	svg.onmouseleave = function() {
 		    		this.setAttributeNS(null, 'stroke', '#EEE');
 		    	}
 		    	svg.onclick = function() {
 		    		this.setAttributeNS(null, 'stroke', '#2196F3');
+		    		swap_colors(this.getAttribute('data-color'), 'shades');
 		    	}
 		    	svgEl.appendChild(svg);
 
@@ -508,7 +509,7 @@ function UI() {
 
         //copy to clipboard
         clipboard(color);
-        swap_colors(color);
+        swap_colors(color, 'home');
     }
 
     //=>btn click
@@ -605,6 +606,17 @@ function UI() {
     	}
     	savebtn.onclick = function() {
     		this.style.color = '#2196F3';
+
+    		//get current swatch section data and save it and a new swatch
+    		let temp_colors = self.store.get_key('temp_swatch');
+
+    		let save_swatch = {
+    			id: uuid(),
+    			color: temp_colors,
+    		}
+
+    		//save data
+    		self.store.update('swatches', save_swatch);
     	}
 
     	//Color
@@ -616,22 +628,33 @@ function UI() {
    	}
 
    	//swap swatch colors
-   	var swap_colors = function(color="#EEE") {
-   		//refresh footer
+   	var swap_colors = function(color="#EEE", pageRef) {
+
+   		var page = null;
+   		switch(pageRef) {
+   			case 'home':
+   				page = colorgrid_pg();	
+   				break;
+   			case 'shades':
+   				page = shade_pg();
+   				break;
+   			case 'swatches':
+   				page = swatch_pg();
+   				break;
+   			default:
+   				break;
+   		}
    		let temp_colors = self.store.get_key('temp_swatch');
-   		console.log('colors', temp_colors);
 
    		//swap colors
-   	 	// let c = temp_colors[0];
-   	 	// temp_colors[1] = c;
-   	 	// temp_colors[2] = temp_colors[];
-   	 	// temp_colors[0] = color;
-   	 	for(let i = 0; i < temp_colors.length; i++) {
-   	 		
-   	 	}
+   	 	let temp = "";
+   	 	temp_colors.unshift(color);
+   	 	temp_colors.pop();
+   	 	//save data
+   	 	self.store.update('temp_swatch', temp_colors);
 
-   		//refresh footer
-   		self.render();
+   		//refresh content
+   		self.render(page, header);
    	}
 
     //render the page

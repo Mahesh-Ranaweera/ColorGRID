@@ -120,6 +120,12 @@ function app_data() {
 				save = this.preset.tabs[value];
 				get_data.opentab = save; 
 				break;
+			case 'temp_swatch':
+				get_data.temp_swatch = value;
+				break;
+			case 'swatches':
+				get_data.swatches.push(value);
+				break;
 			default:
 				break;
 		}
