@@ -178,6 +178,9 @@ function UI() {
     //shades page
     var shade_pg = function() {
 
+        //get old data 
+        let temp_color = self.store.get_key("temp_color");
+
     	let page = document.createElement('DIV');
     	page.setAttribute('style', 'width:'+self.boxW+'px; height:'+self.boxH+'px;');
     	page.id = 'shade_pg';
@@ -191,7 +194,7 @@ function UI() {
     	hex_input.setAttribute('style', 'width: 100%; height: 40px; float: left; border-style:none; background-color: inherit; color: #78909c; font-size: 16px; text-indent: 10px; flex: 1;  letter-spacing:4px; text-transform:uppercase;')
     	hex_input.setAttribute('type', 'text');
     	hex_input.id = 'getcolor';
-    	hex_input.value = '#2196F3';
+    	hex_input.value = temp_color.color; //set the temp color
     	hex_input.onkeyup = function() {
     		let color = this.value;
     		if(!is_hex(color)){
@@ -208,7 +211,7 @@ function UI() {
     	perc_input.setAttribute('max', '1');
     	perc_input.setAttribute('step', '0.01');
     	perc_input.id = 'getpercent';
-    	perc_input.value = '0.5';
+    	perc_input.value = temp_color.percent;
     	perc_input.onkeyup = function() {
     		let percent = this.value;
     		if(!is_percent(percent)){
@@ -234,6 +237,9 @@ function UI() {
      			return;
      		}
 
+            //save search color
+            self.store.update('temp_color', {color: sel.value, percent: perc.value});
+
     		page.innerHTML = "";
     		section.appendChild(hex_input);
     		section.appendChild(perc_input);
@@ -252,7 +258,7 @@ function UI() {
     	section.appendChild(perc_input);
     	section.appendChild(btn);
 
-    	let shades = get_shades('#2196F3', 0.5);
+    	let shades = get_shades(temp_color.color, temp_color.percent);
     	let M = render_shades(shades);
     	search.appendChild(section);
     	page.appendChild(search);
@@ -377,8 +383,11 @@ function UI() {
 		    		this.setAttributeNS(null, 'stroke', '#EEE');
 		    	}
 		    	svg.onclick = function() {
+                    let color = this.getAttribute('data-color');
+
 		    		this.setAttributeNS(null, 'stroke', '#2196F3');
-		    		swap_colors(this.getAttribute('data-color'), 'shades');
+		    		swap_colors(color, 'shades');
+                    clipboard(color);
 		    	}
 		    	svgEl.appendChild(svg);
 
@@ -401,9 +410,10 @@ function UI() {
     var swatch_pg = function() {
     	let page = document.createElement('DIV');
     	page.setAttribute('style', 'width:'+self.boxW +'px; height:' + self.boxH+'px; overflow: auto;');
-    	page.id = 'swatche_pg';
+        page.setAttribute('data-simplebar', '');
+    	page.id = 'swatch_pg';
 
-    	let swatch_data = self.store.get_key('swatches');
+    	let swatch_data = self.store.get_key('swatches').reverse();
     	swatch_data.forEach((e) => {
 
     		let wrapper = document.createElementNS(self.xmlns, 'svg');
@@ -412,19 +422,18 @@ function UI() {
     		wrapper.setAttributeNS(null, 'height', 24 + 'px');
     		wrapper.setAttributeNS(null, 'stroke-width', '1');
     		wrapper.setAttribute('style', 'padding:2px;');
-    		wrapper.onmouseover = function() {
-    			this.setAttributeNS(null, 'stroke', '#78909c');
-    		}
-    		wrapper.onmouseleave = function() {
-    			this.setAttributeNS(null, 'stroke', '');
-    		}
-    		wrapper.onclick = function() {
-    			this.setAttributeNS(null, 'stroke', '#2196F3');
-    		}
 
     		let c = e;
     		let col = 0;
     		for(let i = 0; i < 4; i++){
+                let g = document.createElementNS(self.xmlns, 'g');
+                g.setAttribute('style', 'cursor:pointer !important;');
+                g.setAttribute('data-color', c.color[i]);
+                g.onclick = function() {
+                    //console.log(this.getAttribute('data-color'));
+                    clipboard(this.getAttribute('data-color'));
+                }
+
     			let el = document.createElementNS(self.xmlns, 'rect');
     			el.setAttributeNS(null, 'width', 58 + 'px');
     			el.setAttributeNS(null, 'height', 22 + 'px');
@@ -433,18 +442,29 @@ function UI() {
     			el.setAttributeNS(null, 'style', 'fill:'+c.color[i]);
     			el.setAttribute('data-color', c.color[i])
     			el.setAttribute('title', c.color[i]);
-    			el.onmouseover = function() {
-    				this.setAttributeNS(null, 'stroke', '#78909c');
-    				console.log(this.getAttribute('data-color'))
-    			}
-    			el.onmouseleave = function() {
-    				this.setAttributeNS(null, 'stroke', '');
-    			}
-    			el.onclick = function() {
-    				this.setAttributeNS(null, 'stroke', '#2196F3');
-    				console.log(this.getAttribute('data-color'));
-    			}
-    			wrapper.appendChild(el);
+    			//el.onmouseover = function() {
+    				//this.setAttributeNS(null, 'stroke', '#78909c');
+    				//console.log(this.getAttribute('data-color'))
+    			//}
+    			//el.onmouseleave = function() {
+    				//this.setAttributeNS(null, 'stroke', '');
+    			//}
+    			//el.onclick = function() {
+    				//this.setAttributeNS(null, 'stroke', '#2196F3');
+    				//console.log(this.getAttribute('data-color'));
+    			//}
+
+                let textcolor = document.createElementNS(self.xmlns, 'text');
+                textcolor.setAttributeNS(null, 'y', 14 + 'px');
+                textcolor.setAttributeNS(null, 'style', 'fill:#FFF');
+                textcolor.setAttributeNS(null, 'x', col + 6 + 'px');
+                textcolor.setAttributeNS(null, 'text-anchor', 'start');
+                let textnode = document.createTextNode(c.color[i]);
+                textcolor.appendChild(textnode);
+
+                g.appendChild(el)
+                g.appendChild(textcolor);
+    			wrapper.appendChild(g);
     			col += 60;
     		}
 
@@ -607,16 +627,28 @@ function UI() {
     	savebtn.onclick = function() {
     		this.style.color = '#2196F3';
 
+            //get the swatch array
+            let swatch_arr = self.store.get_key('swatches');
     		//get current swatch section data and save it and a new swatch
     		let temp_colors = self.store.get_key('temp_swatch');
 
-    		let save_swatch = {
-    			id: uuid(),
-    			color: temp_colors,
-    		}
+            let color_found = false;
+            //compare swatch before save to avoid duplicate
+            swatch_arr.forEach((e) => {
+                if(e.color[0] == temp_colors[0] && e.color[1] == temp_colors[1] && e.color[2] == temp_colors[2] && e.color[3] == temp_colors[3]) {
+                    color_found = true;
+                }
+            });
 
-    		//save data
-    		self.store.update('swatches', save_swatch);
+            let save_swatch = {
+                id: uuid(),
+                color: temp_colors,
+            }
+
+            if(!color_found) {
+                //save data
+                self.store.update('swatches', save_swatch);
+            }
     	}
 
     	//Color

@@ -14,28 +14,13 @@ function app_data() {
 			name: 'home',
 		},
 		//swatches
-		swatches: [
-			{
-				id: 122113,
-				color: [
-					'#2196F3',
-					'#EEEEEE',
-					'#2196F3',
-					'#EEEEEE',
-				]
-			},
-			{
-				id: 223133,
-				color: [
-					'#2196F3',
-					'#EEEEEE',
-					'#2196F3',
-					'#EEEEEE',
-				]
-			},
-		],
+		swatches: [],
 		//temp swatch
-		temp_swatch: ['#EEE', '#EEE', '#EEE', '#EEE']
+		temp_swatch: ['#EEE', '#EEE', '#EEE', '#EEE'],
+		temp_color : {
+			color: '#EEE',
+			percent: '0.1',
+		},
 	}
 
 	//store preset data
@@ -122,6 +107,9 @@ function app_data() {
 				break;
 			case 'temp_swatch':
 				get_data.temp_swatch = value;
+				break;
+			case 'temp_color':
+				get_data.temp_color = value;
 				break;
 			case 'swatches':
 				get_data.swatches.push(value);
