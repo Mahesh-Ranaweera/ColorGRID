@@ -31,6 +31,9 @@ function UI() {
         loc_diff : 5, //location gap
     }
 
+    //get the bg color
+    this.bgcolor = this.store.get_key('bgcolor').color;
+
     var self = this;
 
     //set the frame size
@@ -60,7 +63,70 @@ function UI() {
 	        el_head.appendChild(btn);
 	    });
 
+        //info icon
+        let info_ic = document.createElement('DIV');
+        info_ic.setAttribute('style', 'width:40px;height:40px;float:right;padding:8px;box-sizing:border-box;line-height:40px;');
+        info_ic.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-info"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12" y2="8"></line></svg>`;
+        info_ic.id = 'info_icon';
+        info_ic.onmouseover = function() {
+            //let icon = document.getElementById('info_icon');
+        }
+        info_ic.onmouseleave = function() {
+            //let icon = document.getElementById('info_icon');
+        }
+        info_ic.onclick = function() {
+            let info_pg = document.getElementById('info_page');
+            if(info_pg.style.display === 'none') {
+                info_pg.style.display = 'block';
+            } else {
+                info_pg.style.display = 'none';
+            }
+        }
+
+        el_head.appendChild(info_ic);
+
 	    return el_head;
+    }
+
+    //generate the info panel
+    var info_pg = function() {
+        let pop_up = document.createElement('DIV');
+        pop_up.setAttribute('style', `width:${self.boxW}px;height:${self.boxH}px;display:block;margin:auto;display:none;z-index:1000;background-color:${self.bgcolor};position:absolute;left:0;right:0;bottom:0;top:0;border-radius:2px;`);
+        pop_up.classList.add('box_shadow');
+        pop_up.id = 'info_page';
+
+        //popup header
+        let pop_head = document.createElement('DIV');
+        pop_head.setAttribute('style', 'width:100%;height:40px;float:left;display:flex;');
+
+        //pop title
+        let pop_title = document.createElement('DIV');
+        pop_title.setAttribute('style', 'width:100%;heightL:40px;flex:1;float:left;line-height:40px;font-size:10px;text-indent:10px;');
+        pop_title.innerText = 'ColorGRID Info';
+        pop_head.appendChild(pop_title);
+
+        //pop close 
+        let pop_close = document.createElement('DIV');
+        pop_close.setAttribute('style', 'width:40px;height:40px;float:right;padding:8px;box-sizing:border-box;line-height:40px;');
+        pop_close.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>`;
+        pop_close.onclick = function() {
+            let info_pg = document.getElementById('info_page');
+            info_pg.style.display = 'none';
+        }
+        pop_head.appendChild(pop_close);
+
+        let pop_body = document.createElement('DIV');
+        pop_body.setAttribute('style', 'width:100%;height:calc(100% - 80px);');
+        pop_body.setAttribute('data-simplebar', '');
+
+        let pop_footer = document.createElement('DIV');
+        pop_footer.setAttribute('style', 'width:100%;height:40px;float:left;bottom:0;');
+
+        pop_up.appendChild(pop_head);
+        pop_up.appendChild(pop_body);
+        pop_up.appendChild(pop_footer);
+
+        return pop_up;
     }
 
     //generate the footer
@@ -97,12 +163,15 @@ function UI() {
     	icon.onclick = function() {
     		let icon = document.getElementById('bgicon');
     		let BG = document.body;
+            let info_pg = document.getElementById('info_page');
 
     		if(self.store.get_key('bgcolor').name === 'light'){
     			BG.style.backgroundColor = '#111';
+                info_pg.style.backgroundColor = '#111';
     			self.store.update('bgcolor', 'dark');
     		} else {
     			BG.style.backgroundColor = '#fff';
+                info_pg.style.backgroundColor = '#fff';
     			self.store.update('bgcolor', 'light');
     		}
     	}
@@ -409,7 +478,7 @@ function UI() {
     //swatches page
     var swatch_pg = function() {
     	let page = document.createElement('DIV');
-    	page.setAttribute('style', 'width:'+self.boxW +'px; height:' + self.boxH+'px; overflow: auto;');
+    	page.setAttribute('style', 'width:'+self.boxW +'px; height:' + self.boxH+'px;');
         page.setAttribute('data-simplebar', '');
     	page.id = 'swatch_pg';
 
@@ -695,6 +764,7 @@ function UI() {
     	this.el.appendChild(header);
     	this.el.appendChild(page);
     	this.el.appendChild(footer_pg());
+        this.el.appendChild(info_pg());
         this.app.appendChild(this.el);
         console.log('colorGRID initialized');
     }
