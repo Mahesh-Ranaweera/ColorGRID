@@ -65,14 +65,16 @@ function UI() {
 
         //info icon
         let info_ic = document.createElement('DIV');
-        info_ic.setAttribute('style', 'width:40px;height:40px;float:right;padding:8px;box-sizing:border-box;line-height:40px;');
+        info_ic.setAttribute('style', 'width:40px;height:40px;float:right;padding:8px;box-sizing:border-box;line-height:40px;color:#78909c;');
         info_ic.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-info"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12" y2="8"></line></svg>`;
+        info_ic.classList.add('btn');
+        info_ic.setAttribute('title', 'Open Info');
         info_ic.id = 'info_icon';
         info_ic.onmouseover = function() {
-            //let icon = document.getElementById('info_icon');
+            this.style.color = '#2962FF';
         }
         info_ic.onmouseleave = function() {
-            //let icon = document.getElementById('info_icon');
+            this.style.color = '#78909c';
         }
         info_ic.onclick = function() {
             let info_pg = document.getElementById('info_page');
@@ -101,14 +103,20 @@ function UI() {
 
         //pop title
         let pop_title = document.createElement('DIV');
-        pop_title.setAttribute('style', 'width:100%;heightL:40px;flex:1;float:left;line-height:40px;font-size:10px;text-indent:10px;');
+        pop_title.setAttribute('style', 'width:100%;heightL:40px;flex:1;float:left;line-height:40px;font-size:10px;text-indent:10px;color:#78909c;');
         pop_title.innerText = 'ColorGRID Info';
         pop_head.appendChild(pop_title);
 
         //pop close 
         let pop_close = document.createElement('DIV');
-        pop_close.setAttribute('style', 'width:40px;height:40px;float:right;padding:8px;box-sizing:border-box;line-height:40px;');
+        pop_close.setAttribute('style', 'width:40px;height:40px;float:right;padding:8px;box-sizing:border-box;line-height:40px;color:#78909c;');
         pop_close.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>`;
+        pop_close.onmouseover = function() {
+            this.style.color = '#2962FF';
+        }
+        pop_close.onmouseleave = function() {
+            this.style.color = '#78909c';
+        }
         pop_close.onclick = function() {
             let info_pg = document.getElementById('info_page');
             info_pg.style.display = 'none';
@@ -118,6 +126,15 @@ function UI() {
         let pop_body = document.createElement('DIV');
         pop_body.setAttribute('style', 'width:100%;height:calc(100% - 80px);');
         pop_body.setAttribute('data-simplebar', '');
+
+        let info = '';
+        info_data.sections.forEach((section) => {
+            info += section.content;
+        });
+
+        pop_body.innerHTML = info;
+
+        console.log(info_data);
 
         let pop_footer = document.createElement('DIV');
         pop_footer.setAttribute('style', 'width:100%;height:40px;float:left;bottom:0;');
@@ -149,16 +166,15 @@ function UI() {
     	text.innerText = 'BG COLOR';
 
     	let icon = document.createElement('DIV');
-    	icon.setAttribute('style', 'width: 40px; height: 40px; float:right; padding: 8px; box-sizing:border-box;');
+    	icon.setAttribute('style', 'width: 40px; height: 40px; float:right; padding: 8px; box-sizing:border-box;color:#78909c;');
     	icon.innerHTML = `<svg id='bgicon' xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="transparent" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-droplet"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"></path></svg>`;
+        icon.setAttribute('title', 'Toggle BG Color');
     	icon.id = 'bg_color';
     	icon.onmouseover = function() {
-    		let icon = document.getElementById('bgicon');
-    		icon.setAttributeNS(null, 'stroke', '#2962ff');
+    		this.style.color = '#2962FF';
     	}
     	icon.onmouseleave = function() {
-    		let icon = document.getElementById('bgicon');
-    		icon.setAttributeNS(null, 'stroke', '#78909c');
+            this.style.color = '#78909c';
     	}
     	icon.onclick = function() {
     		let icon = document.getElementById('bgicon');
@@ -231,6 +247,7 @@ function UI() {
                 box.setAttribute('onmouseenter', 'colorgrid.ui.over(this, "'+color+'")');
                 box.setAttribute('onmouseleave', 'colorgrid.ui.away(this)');
                 box.setAttribute('onclick', 'colorgrid.ui.click(this, "'+color+'")');
+                box.setAttribute("title", color);
                 svgEl.appendChild(box);
 
                 col_count += size;
@@ -291,7 +308,7 @@ function UI() {
     	}
 
     	let btn = document.createElement('DIV');
-    	btn.setAttribute('style', 'width:40px; height:40px; text-align:center; line-height:40px; float: left; padding: 8px; box-sizing:border-box;')
+    	btn.setAttribute('style', 'width:40px; height:40px; text-align:center; line-height:40px; float: left; padding: 8px; box-sizing:border-box;color:#78909c;')
     	btn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" style="cursor:pointer;" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-play"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>`;
     	btn.onmouseover = function() {
     		this.style.color = '#2962ff'; //hover
@@ -443,6 +460,7 @@ function UI() {
 		    	svg.setAttribute('rgb', color_arr.rgb[counter]);
 		    	svg.setAttribute('data-x', j);
 		    	svg.setAttribute('data-y', i);
+                svg.setAttribute("title", color_arr.hex[counter]);
 		    	svg.onmouseover = function() {
 		    		this.setAttributeNS(null, 'stroke', '#78909c');
 		    		console.log(this.getAttribute('data-color'));
@@ -685,10 +703,11 @@ function UI() {
 
     	//save btn
     	let savebtn = document.createElement('DIV');
-    	savebtn.setAttribute('style', 'width:40px;height:40px;float:left;padding:8px;box-sizing:border-box;color:#78909c');
+    	savebtn.setAttribute('style', 'width:40px;height:40px;float:left;padding:8px;box-sizing:border-box;color:#78909c;');
     	savebtn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-save"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>`;
+        savebtn.setAttribute('title', 'Save Swatch');
     	savebtn.onmouseover = function() {
-    		this.style.color = '#78909c';
+    		this.style.color = '#2962FF';
     	}
     	savebtn.onmouseleave = function() {
     		this.style.color = '#78909c';
@@ -758,6 +777,12 @@ function UI() {
    		self.render(page, header);
    	}
 
+    var tippy = function() {
+        var script = document.createElement('script');
+        script.innerHTML = "tippy('[title]');";
+        return script;
+    }
+
     //render the page
     this.render = function(page=colorgrid_pg(), header=header_btns()) {
     	this.el.innerHTML = "";
@@ -766,6 +791,7 @@ function UI() {
     	this.el.appendChild(footer_pg());
         this.el.appendChild(info_pg());
         this.app.appendChild(this.el);
+        this.app.appendChild(tippy());
         console.log('colorGRID initialized');
     }
 }

@@ -1,3 +1,48 @@
+/*
+* App data
+ */
+var info_data = {
+    sections: [
+        {
+            label: "App Preview",
+            content: "",
+        },
+        {
+            label: "About",
+            content: "Made with &#10084; by Mahesh \n https://github.com/Mahesh-Ranaweera",
+        },
+        {
+            label: "Credit",
+            content: "Credit goes to following open-source libraries and packages \n Simplebar(http://grsmto.github.io/simplebar/) \n Tippy(https://atomiks.github.io/tippyjs/)",
+        },
+    ]
+}
+
+/**
+ * Define the necessary buttons
+ */
+var pg_btns = {
+    //ui btns
+    btns : [
+        {
+            name: 'home',
+            icon: '',
+            value: 'home',
+        },{
+            name: 'shades',
+            icon: '',
+            value: 'shades',
+        },{
+            name: 'swatches',
+            icon: '',
+            value: 'swatches',
+        }
+    ]
+}
+
+/**
+ * Colors
+ */
 /**
  * Colors
  */
