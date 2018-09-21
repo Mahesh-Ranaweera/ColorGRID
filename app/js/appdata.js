@@ -9,11 +9,11 @@ var info_data = {
         },
         {
             label: "About",
-            content: "Made with &#10084; by Mahesh \n https://github.com/Mahesh-Ranaweera",
+            content: `<p class="about_desc">Made with &#10084; by Mahesh</p><p class="about_desc">https://github.com/Mahesh-Ranaweera</p>`,
         },
         {
             label: "Credit",
-            content: "Credit goes to following open-source libraries and packages \n Simplebar(http://grsmto.github.io/simplebar/) \n Tippy(https://atomiks.github.io/tippyjs/)",
+            content: `<p class="about_desc">Credit goes to following open-source libraries and packages</p><p class="about_desc">Simplebar(http://grsmto.github.io/simplebar/)</p><p class="about_desc">Tippy(https://atomiks.github.io/tippyjs/)</p>`,
         },
     ]
 }
