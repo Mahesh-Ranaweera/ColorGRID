@@ -23,6 +23,6 @@
   },
   "homepage": "https://github.com/Mahesh-Ranaweera/ColorGRID#readme",
   "dependencies": {
-    "electron": "^2.0.8"
+    "electron": "^3.0.0"
   }
 }

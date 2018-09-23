@@ -134,7 +134,7 @@ function UI() {
 
         pop_body.innerHTML = info;
 
-        console.log(info_data);
+        //console.log(info_data);
 
         let pop_footer = document.createElement('DIV');
         pop_footer.setAttribute('style', 'width:100%;height:40px;float:left;bottom:0;');
@@ -463,7 +463,7 @@ function UI() {
                 svg.setAttribute("title", color_arr.hex[counter]);
 		    	svg.onmouseover = function() {
 		    		this.setAttributeNS(null, 'stroke', '#78909c');
-		    		console.log(this.getAttribute('data-color'));
+		    		//console.log(this.getAttribute('data-color'));
 		    		//console.log(this.getAttribute('data-x'), this.getAttribute('data-y'))
 		    	}
 		    	svg.onmouseleave = function() {
@@ -584,7 +584,7 @@ function UI() {
 
     //=>away
     this.away = function(e) {
-        console.log('mouse away', e.getAttribute('value'));
+        //console.log('mouse away', e.getAttribute('value'));
         e.setAttributeNS(null, 'stroke', 'none');
         e.setAttributeNS(null, 'stroke-width', 'none');
         e.setAttributeNS(null, 'width', this.settings.c_min_size + 'px');
@@ -601,7 +601,7 @@ function UI() {
     //=>click
     this.click = function(e, color) {
         this.resetE(e);
-        console.log('clicked', e.getAttribute('value'));
+        //console.log('clicked', e.getAttribute('value'));
         e.setAttributeNS(null, 'stroke', '#2196F3');
         e.setAttributeNS(null, 'stroke-width', '2');
         e.setAttributeNS(null, 'width', this.settings.c_max_size + 'px');
@@ -625,13 +625,13 @@ function UI() {
         let header = header_btns();
 
         if(selectbtn === 'home'){
-        	console.log('selected home')
+        	//console.log('selected home')
         	self.store.update('opentab', 'home');
         	this.render(colorgrid_pg(), header);
         }
 
         if(selectbtn === 'shades') {
-        	console.log('selected shades');
+        	//console.log('selected shades');
         	self.store.update('opentab', 'shades');
         	this.render(shade_pg(), header);
         }
