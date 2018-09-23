@@ -11,7 +11,7 @@ function createWindow() {
         resizable: false,
         //frame: false,
         backgroundColor: "#111",
-        //icon: __dirname + '/icon.ico'
+        icon: __dirname + '/app/assets/icon.png',
     });
 
     //remove app menu
